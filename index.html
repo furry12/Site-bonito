@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nossa História ❤️</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at top, #ff4d6d, #0a0a0a);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }/* ANIMAÇÕES */
+.fade-in {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* DIGITAÇÃO */
+.typing {
+  border-right: 2px solid white;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* CORAÇÕES */
+.heart {
+  position: fixed;
+  color: #ff4d6d;
+  animation: float 6s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* BOTÃO PREMIUM */
+.btn-glow {
+  background: white;
+  color: black;
+  border-radius: 20px;
+  padding: 12px 24px;
+  transition: 0.3s;
+}
+
+.btn-glow:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #ff4d6d;
+}
+
+  </style>
+</head>
+<body class="text-white font-sans">  <!-- HERO -->  <section class="h-screen flex flex-col items-center justify-center text-center px-4">
+    <h1 class="text-4xl md:text-6xl font-bold mb-4">Para minha princesa ❤️</h1>
+    <p class="opacity-70 mb-6">Cada segundo com você vale a pena</p><button onclick="scrollToContent()" class="btn-glow">
+  Começar ✨
+</button>
+
+  </section>  <!-- CONTADOR REAL -->  <section id="content" class="py-20 text-center fade-in">
+    <h2 class="text-3xl mb-6">Nosso tempo juntos ⏳</h2>
+    <div class="flex justify-center gap-6">
+      <div class="bg-white/10 p-4 rounded-2xl">
+        <h2 id="years" class="text-2xl font-bold">0</h2>
+        <p>Anos</p>
+      </div>
+      <div class="bg-white/10 p-4 rounded-2xl">
+        <h2 id="months" class="text-2xl font-bold">0</h2>
+        <p>Meses</p>
+      </div>
+      <div class="bg-white/10 p-4 rounded-2xl">
+        <h2 id="days" class="text-2xl font-bold">0</h2>
+        <p>Dias</p>
+      </div>
+    </div>
+  </section>  <!-- GALERIA ESTILO APP -->  <section class="py-20 px-6 fade-in">
+    <h2 class="text-3xl text-center mb-10">Nossos momentos 📸</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <img src="foto1.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
+      <img src="foto2.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
+      <img src="foto3.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
+      <img src="foto4.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
+    </div>
+  </section>  <!-- CARTA COM DIGITAÇÃO -->  <section class="py-20 px-6 text-center fade-in">
+    <h2 class="text-3xl mb-6">Uma mensagem 💌</h2>
+    <p id="text" class="max-w-xl mx-auto typing"></p>
+  </section>  <!-- BOTÃO SURPRESA -->  <section class="py-20 text-center fade-in">
+    <button onclick="surpresa()" class="btn-glow">Clique aqui 💖</button>
+    <p id="surpresaText" class="mt-6 opacity-0 transition">Eu te amo mais do que tudo ❤️</p>
+  </section>  <!-- MÚSICA -->  <section class="py-20 text-center fade-in">
+    <h2 class="text-2xl mb-4">Nossa música 🎶</h2>
+    <audio controls>
+      <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+  </section>  <script>
+    function scrollToContent() {
+      document.getElementById('content').scrollIntoView();
+    }
+
+    // CONTADOR AUTOMÁTICO
+    const startDate = new Date("2021-09-12");
+
+    function updateCounter() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const years = Math.floor(days / 365);
+      const months = Math.floor((days % 365) / 30);
+
+      document.getElementById("years").textContent = years;
+      document.getElementById("months").textContent = months;
+      document.getElementById("days").textContent = days % 30;
+    }
+
+    updateCounter();
+
+    // ANIMAÇÃO SCROLL
+    const elements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    });
+    elements.forEach(el => observer.observe(el));
+
+    // CORAÇÕES
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.innerHTML = '❤️';
+      heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }, 400);
+
+    // DIGITAÇÃO
+    const message = "Desde que você entrou na minha vida, tudo mudou. Você é o meu melhor sorriso, meu lugar favorito e o amor da minha vida.";
+    let i = 0;
+
+    function typing() {
+      if (i < message.length) {
+        document.getElementById("text").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typing, 40);
+      }
+    }
+
+    typing();
+
+    // SURPRESA
+    function surpresa() {
+      const el = document.getElementById("surpresaText");
+      el.style.opacity = 1;
+    }
+  </script></body>
+</html>
