@@ -1,18 +1,20 @@
 <!DOCTYPE html><html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nossa História ❤️</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      margin: 0;
-      background: radial-gradient(circle at top, #ff4d6d, #0a0a0a);
-      color: white;
-      font-family: sans-serif;
-      overflow-x: hidden;
-      scroll-snap-type: y mandatory;
-    }section {
+    :root{ --size: 260px; --depth: 360px; }body {
+  margin: 0;
+  background: radial-gradient(circle at top, #ff4d6d, #0a0a0a);
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+}
+
+section {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -23,105 +25,88 @@
   scroll-snap-align: start;
 }
 
-/* HERO */
-.title {
-  font-size: 2.5rem;
-  font-weight: bold;
-}
+.title { font-size: 2.5rem; font-weight: 800; }
 
-/* CARROSSEL 3D */
+/* CARROSSEL 3D (corrigido) */
 .carousel {
   perspective: 1200px;
+  width: var(--size);
+  height: var(--size);
 }
 
 .carousel-inner {
   position: relative;
-  width: 260px;
-  height: 260px;
+  width: 100%;
+  height: 100%;
   transform-style: preserve-3d;
-  transition: transform 1s;
-  animation: spin 10s infinite linear;
+  animation: spin 12s linear infinite;
 }
+
+/* pausa ao interagir (evita "bug" visual) */
+.carousel-inner:hover { animation-play-state: paused; }
 
 .carousel-inner img {
   position: absolute;
+  top: 50%;
+  left: 50%;
   width: 100%;
   height: 100%;
+  transform-origin: center center;
+  transform: translate(-50%, -50%);
   object-fit: cover;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  backface-visibility: hidden; /* evita flicker */
   cursor: pointer;
 }
 
-.img1 { transform: rotateY(0deg) translateZ(300px); }
-.img2 { transform: rotateY(120deg) translateZ(300px); }
-.img3 { transform: rotateY(240deg) translateZ(300px); }
+/* 3 faces bem distribuídas */
+.img1 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(var(--depth)); }
+.img2 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(var(--depth)); }
+.img3 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(var(--depth)); }
 
 @keyframes spin {
   from { transform: rotateY(0deg); }
-  to { transform: rotateY(360deg); }
+  to   { transform: rotateY(360deg); }
 }
 
-/* MODAL FOTO */
+/* MODAL */
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
+  inset: 0;
+  background: rgba(0,0,0,0.92);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: 0.5s;
+  transition: opacity .35s ease;
 }
-
-.modal img {
-  max-width: 90%;
-  max-height: 80%;
-  border-radius: 20px;
-}
-
-.modal.show {
-  opacity: 1;
-  pointer-events: all;
-}
+.modal.show { opacity: 1; pointer-events: all; }
+.modal img { max-width: 92%; max-height: 86%; border-radius: 18px; }
 
 /* DIGITAÇÃO */
 .typing {
-  border-right: 2px solid white;
+  border-right: 2px solid #fff;
   white-space: nowrap;
   overflow: hidden;
+  max-width: 90vw;
 }
 
 /* BOTÃO */
 .btn {
   margin-top: 20px;
   padding: 12px 24px;
-  background: white;
-  color: black;
+  background: #fff;
+  color: #000;
   border-radius: 20px;
-  transition: 0.3s;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-
-.btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px #ff4d6d;
-}
+.btn:hover { transform: scale(1.08); box-shadow: 0 0 18px #ff4d6d; }
 
 /* CORAÇÕES */
-.heart {
-  position: fixed;
-  color: #ff4d6d;
-  animation: float 6s linear infinite;
-}
-
-@keyframes float {
-  from { transform: translateY(100vh); opacity: 1; }
-  to { transform: translateY(-10vh); opacity: 0; }
-}
+.heart { position: fixed; color: #ff4d6d; animation: float 6s linear infinite; }
+@keyframes float { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
 
   </style>
 </head>
@@ -130,29 +115,29 @@
     <p>Esse site é só um pedacinho do que sinto por você</p>
     <button class="btn" onclick="next()">Deslizar ↓</button>
   </section>  <!-- CARROSSEL -->  <section>
-    <h2>Nossos Momentos 📸</h2>
+    <h2 style="font-size:1.6rem;margin-bottom:16px;">Nossos Momentos 📸</h2>
     <div class="carousel">
       <div class="carousel-inner" id="carousel">
-        <img src="foto1.jpg" class="img1" onclick="openModal(this.src)">
-        <img src="foto2.jpg" class="img2" onclick="openModal(this.src)">
-        <img src="foto3.jpg" class="img3" onclick="openModal(this.src)">
+        <img src="foto1.jpg" class="img1" onclick="openModal(this.src)" />
+        <img src="foto2.jpg" class="img2" onclick="openModal(this.src)" />
+        <img src="foto3.jpg" class="img3" onclick="openModal(this.src)" />
       </div>
     </div>
   </section>  <!-- CARTA -->  <section>
-    <h2>Uma mensagem 💌</h2>
+    <h2 style="font-size:1.6rem;margin-bottom:12px;">Uma mensagem 💌</h2>
     <p id="text" class="typing"></p>
   </section>  <!-- SURPRESA -->  <section>
     <button class="btn" onclick="surpresa()">Clique aqui 💖</button>
-    <p id="surpresa" style="opacity:0; transition:0.5s;">Eu te amo mais do que palavras conseguem dizer ❤️</p>
+    <p id="surpresa" style="opacity:0; transition:0.5s; margin-top:12px;">Eu te amo mais do que palavras conseguem dizer ❤️</p>
   </section>  <!-- MÚSICA -->  <section>
-    <h2>Nossa música 🎶</h2>
+    <h2 style="font-size:1.6rem;margin-bottom:12px;">Nossa música 🎶</h2>
     <audio id="audio" controls>
-      <source src="musica.mp3" type="audio/mpeg">
+      <source src="musica.mp3" type="audio/mpeg" />
     </audio>
   </section>  <!-- MODAL -->  <div class="modal" id="modal" onclick="closeModal()">
-    <img id="modalImg">
+    <img id="modalImg" />
   </div>  <script>
-    function next(){ window.scrollBy(0, window.innerHeight); }
+    function next(){ window.scrollBy({ top: window.innerHeight, behavior: 'smooth' }); }
 
     // DIGITAÇÃO
     const msg = "Desde que você entrou na minha vida, tudo ficou mais bonito. Você é meu melhor sorriso, meu lugar favorito e o amor da minha vida.";
@@ -161,7 +146,7 @@
       if(i < msg.length){
         document.getElementById('text').innerHTML += msg.charAt(i);
         i++;
-        setTimeout(typing,40);
+        setTimeout(typing, 36);
       }
     }
     typing();
@@ -169,7 +154,8 @@
     // SURPRESA
     function surpresa(){
       document.getElementById('surpresa').style.opacity = 1;
-      document.getElementById('audio').play();
+      const a = document.getElementById('audio');
+      a.muted = false; a.play().catch(()=>{});
     }
 
     // MODAL
@@ -178,10 +164,7 @@
       document.getElementById('modalImg').src = src;
       modal.classList.add('show');
     }
-
-    function closeModal(){
-      document.getElementById('modal').classList.remove('show');
-    }
+    function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 
     // CORAÇÕES
     setInterval(()=>{
@@ -189,9 +172,9 @@
       h.className = 'heart';
       h.style.left = Math.random()*100+'vw';
       h.innerHTML = '❤️';
-      h.style.fontSize = (Math.random()*20+10)+'px';
+      h.style.fontSize = (Math.random()*18+12)+'px';
       document.body.appendChild(h);
       setTimeout(()=>h.remove(),6000);
-    },400);
+    },450);
   </script></body>
 </html>
