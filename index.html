@@ -6,19 +6,87 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
+      margin: 0;
       background: radial-gradient(circle at top, #ff4d6d, #0a0a0a);
+      color: white;
+      font-family: sans-serif;
       overflow-x: hidden;
-      scroll-behavior: smooth;
-    }/* ANIMAÇÕES */
-.fade-in {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 1s ease;
+      scroll-snap-type: y mandatory;
+    }section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  scroll-snap-align: start;
 }
 
-.fade-in.show {
+/* HERO */
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+/* CARROSSEL 3D */
+.carousel {
+  perspective: 1200px;
+}
+
+.carousel-inner {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  animation: spin 10s infinite linear;
+}
+
+.carousel-inner img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  cursor: pointer;
+}
+
+.img1 { transform: rotateY(0deg) translateZ(300px); }
+.img2 { transform: rotateY(120deg) translateZ(300px); }
+.img3 { transform: rotateY(240deg) translateZ(300px); }
+
+@keyframes spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+/* MODAL FOTO */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.modal img {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 20px;
+}
+
+.modal.show {
   opacity: 1;
-  transform: translateY(0);
+  pointer-events: all;
 }
 
 /* DIGITAÇÃO */
@@ -26,6 +94,21 @@
   border-right: 2px solid white;
   white-space: nowrap;
   overflow: hidden;
+}
+
+/* BOTÃO */
+.btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: white;
+  color: black;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #ff4d6d;
 }
 
 /* CORAÇÕES */
@@ -40,126 +123,75 @@
   to { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* BOTÃO PREMIUM */
-.btn-glow {
-  background: white;
-  color: black;
-  border-radius: 20px;
-  padding: 12px 24px;
-  transition: 0.3s;
-}
-
-.btn-glow:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px #ff4d6d;
-}
-
   </style>
 </head>
-<body class="text-white font-sans">  <!-- HERO -->  <section class="h-screen flex flex-col items-center justify-center text-center px-4">
-    <h1 class="text-4xl md:text-6xl font-bold mb-4">Para minha princesa ❤️</h1>
-    <p class="opacity-70 mb-6">Cada segundo com você vale a pena</p><button onclick="scrollToContent()" class="btn-glow">
-  Começar ✨
-</button>
-
-  </section>  <!-- CONTADOR REAL -->  <section id="content" class="py-20 text-center fade-in">
-    <h2 class="text-3xl mb-6">Nosso tempo juntos ⏳</h2>
-    <div class="flex justify-center gap-6">
-      <div class="bg-white/10 p-4 rounded-2xl">
-        <h2 id="years" class="text-2xl font-bold">0</h2>
-        <p>Anos</p>
-      </div>
-      <div class="bg-white/10 p-4 rounded-2xl">
-        <h2 id="months" class="text-2xl font-bold">0</h2>
-        <p>Meses</p>
-      </div>
-      <div class="bg-white/10 p-4 rounded-2xl">
-        <h2 id="days" class="text-2xl font-bold">0</h2>
-        <p>Dias</p>
+<body>  <!-- HERO -->  <section>
+    <h1 class="title">Para minha princesa ❤️</h1>
+    <p>Esse site é só um pedacinho do que sinto por você</p>
+    <button class="btn" onclick="next()">Deslizar ↓</button>
+  </section>  <!-- CARROSSEL -->  <section>
+    <h2>Nossos Momentos 📸</h2>
+    <div class="carousel">
+      <div class="carousel-inner" id="carousel">
+        <img src="foto1.jpg" class="img1" onclick="openModal(this.src)">
+        <img src="foto2.jpg" class="img2" onclick="openModal(this.src)">
+        <img src="foto3.jpg" class="img3" onclick="openModal(this.src)">
       </div>
     </div>
-  </section>  <!-- GALERIA ESTILO APP -->  <section class="py-20 px-6 fade-in">
-    <h2 class="text-3xl text-center mb-10">Nossos momentos 📸</h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-      <img src="foto1.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
-      <img src="foto2.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
-      <img src="foto3.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
-      <img src="foto4.jpg" class="rounded-2xl hover:scale-110 transition duration-300">
-    </div>
-  </section>  <!-- CARTA COM DIGITAÇÃO -->  <section class="py-20 px-6 text-center fade-in">
-    <h2 class="text-3xl mb-6">Uma mensagem 💌</h2>
-    <p id="text" class="max-w-xl mx-auto typing"></p>
-  </section>  <!-- BOTÃO SURPRESA -->  <section class="py-20 text-center fade-in">
-    <button onclick="surpresa()" class="btn-glow">Clique aqui 💖</button>
-    <p id="surpresaText" class="mt-6 opacity-0 transition">Eu te amo mais do que tudo ❤️</p>
-  </section>  <!-- MÚSICA -->  <section class="py-20 text-center fade-in">
-    <h2 class="text-2xl mb-4">Nossa música 🎶</h2>
-    <audio controls>
+  </section>  <!-- CARTA -->  <section>
+    <h2>Uma mensagem 💌</h2>
+    <p id="text" class="typing"></p>
+  </section>  <!-- SURPRESA -->  <section>
+    <button class="btn" onclick="surpresa()">Clique aqui 💖</button>
+    <p id="surpresa" style="opacity:0; transition:0.5s;">Eu te amo mais do que palavras conseguem dizer ❤️</p>
+  </section>  <!-- MÚSICA -->  <section>
+    <h2>Nossa música 🎶</h2>
+    <audio id="audio" controls>
       <source src="musica.mp3" type="audio/mpeg">
     </audio>
-  </section>  <script>
-    function scrollToContent() {
-      document.getElementById('content').scrollIntoView();
-    }
-
-    // CONTADOR AUTOMÁTICO
-    const startDate = new Date("2021-09-12");
-
-    function updateCounter() {
-      const now = new Date();
-      const diff = now - startDate;
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const years = Math.floor(days / 365);
-      const months = Math.floor((days % 365) / 30);
-
-      document.getElementById("years").textContent = years;
-      document.getElementById("months").textContent = months;
-      document.getElementById("days").textContent = days % 30;
-    }
-
-    updateCounter();
-
-    // ANIMAÇÃO SCROLL
-    const elements = document.querySelectorAll('.fade-in');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-        }
-      });
-    });
-    elements.forEach(el => observer.observe(el));
-
-    // CORAÇÕES
-    setInterval(() => {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.innerHTML = '❤️';
-      heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
-    }, 400);
+  </section>  <!-- MODAL -->  <div class="modal" id="modal" onclick="closeModal()">
+    <img id="modalImg">
+  </div>  <script>
+    function next(){ window.scrollBy(0, window.innerHeight); }
 
     // DIGITAÇÃO
-    const message = "Desde que você entrou na minha vida, tudo mudou. Você é o meu melhor sorriso, meu lugar favorito e o amor da minha vida.";
+    const msg = "Desde que você entrou na minha vida, tudo ficou mais bonito. Você é meu melhor sorriso, meu lugar favorito e o amor da minha vida.";
     let i = 0;
-
-    function typing() {
-      if (i < message.length) {
-        document.getElementById("text").innerHTML += message.charAt(i);
+    function typing(){
+      if(i < msg.length){
+        document.getElementById('text').innerHTML += msg.charAt(i);
         i++;
-        setTimeout(typing, 40);
+        setTimeout(typing,40);
       }
     }
-
     typing();
 
     // SURPRESA
-    function surpresa() {
-      const el = document.getElementById("surpresaText");
-      el.style.opacity = 1;
+    function surpresa(){
+      document.getElementById('surpresa').style.opacity = 1;
+      document.getElementById('audio').play();
     }
+
+    // MODAL
+    function openModal(src){
+      const modal = document.getElementById('modal');
+      document.getElementById('modalImg').src = src;
+      modal.classList.add('show');
+    }
+
+    function closeModal(){
+      document.getElementById('modal').classList.remove('show');
+    }
+
+    // CORAÇÕES
+    setInterval(()=>{
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.style.left = Math.random()*100+'vw';
+      h.innerHTML = '❤️';
+      h.style.fontSize = (Math.random()*20+10)+'px';
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),6000);
+    },400);
   </script></body>
 </html>
